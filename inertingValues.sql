@@ -64,3 +64,14 @@ use myshop;
 -- insert into product (price, brand, productname, categoryid, shopid) values (100000,'Roya','Pillow', 3,1);
 -- insert into product (price, brand, productname, categoryid, shopid) values (4000000,'DND','Desk', 3,1);
 -- insert into product (price, brand, productname, categoryid, shopid) values (1000000,'Ikea','Chair', 3,1);
+
+-- insert into productreview(title, rating, published) value ("Not Bad",3,1);
+insert into productreview(title, rating, published) value ("Awful",1,1);
+insert into productreview(title, rating, published) value ("Perfect",5,1);
+insert into productreview(title, rating, published) value ("Loved it!",4,1);
+insert into productreview(title, rating, published) value ("Could have been better",2,1);
+insert into productreview(title, rating, published) value ("Don't recommend",2,1);
+insert into productreview(title, rating, published) value ("Good",4,1);
+insert into productreview(title, rating, published) value ("Awsome",5,1);
+insert into productreview(title, rating, published) value ("The best I've seen",5,1);
+insert into productreview(title, rating, published) value ("Not Bad",3,1);
