@@ -1,0 +1,25 @@
+use myshop;
+
+insert into provider_product(ProductID, ProviderID, price) values (1,1,150000);
+insert into provider_product(ProductID, ProviderID, price) values (1,2,150000);
+insert into provider_product(ProductID, ProviderID, price) values (2,3,2000000);
+insert into provider_product(ProductID, ProviderID, price) values (3,4,1500000);
+insert into provider_product(ProductID, ProviderID, price) values (4,4,500000);
+insert into provider_product(ProductID, ProviderID, price) values (5,5,150000);
+insert into provider_product(ProductID, ProviderID, price) values (5,6,150000);
+insert into provider_product(ProductID, ProviderID, price) values (8,7,150000);
+insert into provider_product(ProductID, ProviderID, price) values (8,8,150000);
+insert into provider_product(ProductID, ProviderID, price) values (9,9,150000);
+insert into provider_product(ProductID, ProviderID, price) values (9,10,150000);
+insert into provider_product(ProductID, ProviderID, price) values (10,11,150000);
+insert into provider_product(ProductID, ProviderID, price) values (12,11,150000);
+insert into provider_product(ProductID, ProviderID, price) values (13,12,150000);
+insert into provider_product(ProductID, ProviderID, price) values (14,12,150000);
+insert into provider_product(ProductID, ProviderID, price) values (15,13,150000);
+insert into provider_product(ProductID, ProviderID, price) values (16,13,150000);
+insert into provider_product(ProductID, ProviderID, price) values (17,14,150000);
+insert into provider_product(ProductID, ProviderID, price) values (18,14,150000);
+insert into provider_product(ProductID, ProviderID, price) values (19,15,150000);
+insert into provider_product(ProductID, ProviderID, price) values (20,15,150000);
+insert into provider_product(ProductID, ProviderID, price) values (21,16,150000);
+insert into provider_product(ProductID, ProviderID, price) values (22,16,150000);
