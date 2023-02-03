@@ -34,12 +34,16 @@ public interface Values {
 
     // region user
     String FULL_NAME_COL = "FullName";
+    String USERNAME_COL = "Username";
+    String PASSWORD_COL = "Password";
     String WEEK_COL = "week";
     String MONTH_COL = "month";
     // endregion
 
     // region user
     String PROVIDER_NAME_COL = "PName";
+    String PROVIDER_COL = "ProviderName";
+    String AVERAGE_SALE_COL = "AverageSale";
     // endregion
 
     // region address

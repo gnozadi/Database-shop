@@ -41,7 +41,17 @@ public class QueriesController implements Initializable {
     public void addSelectQueries() {
         DBQuery query = new DBQuery();
 
-        // TODO:show users(mahya)
+        // show users - mahya
+        title = "Show All users";
+        addQuery(title, () -> {
+            try {
+                result = query.getUsers();
+            } catch (DatabaseException e) {
+                error = e.getMessage();
+            }
+            showResult(title, result, error);
+        });
+
 
         // show product categories - Ghazal
         title = "Show All Categories";
@@ -114,8 +124,19 @@ public class QueriesController implements Initializable {
             showResult(title, result, error);
         });
 
-        // TODO:show the list of the cheapest sellers of items for the admin(mahya)
-        // check isAdmin in Application
+        // show the list of the cheapest sellers of items for the admin - mahya
+        title = "Show the Most Cheap Selling Provider";
+        if (main.Application.isAdmin) {
+            addQuery(title, () -> {
+                try {
+                    result = query.getTheMostCheapSellingProviders();
+                } catch (DatabaseException e) {
+                    error = e.getMessage();
+                }
+                showResult(title, result, error);
+            });
+        }
+
 
         // TODO:show The user's last 10 orders(ali)
 
@@ -137,8 +158,19 @@ public class QueriesController implements Initializable {
         });
 
 
-        // TODO:show Average store sales per month for admin (mahya)
-        // check isAdmin in Application
+        // show Average store sales per month for admin - mahya
+        title = "show Average store sales per month for admin";
+        if (main.Application.isAdmin) {
+            addQuery(title, () -> {
+                try {
+                    result = query.getAverageSalesPerMonth();
+                } catch (DatabaseException e) {
+                    error = e.getMessage();
+                }
+                showResult(title, result, error);
+            });
+        }
+
 
         // show users from a city
         title = "Show fellow-citizen users";
