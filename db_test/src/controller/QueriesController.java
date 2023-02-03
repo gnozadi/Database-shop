@@ -43,7 +43,16 @@ public class QueriesController implements Initializable {
 
         // TODO:show users(mahya)
 
-        // TODO:show product categories(ghazal)
+        // show product categories - Ghazal
+        title = "Show All Categories";
+        addQuery(title, () -> {
+            try {
+                result = query.getCategories();
+            } catch (DatabaseException e) {
+                error = e.getMessage();
+            }
+            showResult(title, result, error);
+        });
 
         // show orders - Bita
         title = "Show All Orders";
@@ -56,8 +65,40 @@ public class QueriesController implements Initializable {
             showResult(title, result, error);
         });
 
-        // TODO:show 10 best user in week(ghazal)
-        // TODO:show 10 best user in month(ghazal)
+        // show 10 best user in week - Ghazal
+        title = "Show 10 best user in week";
+        addQuery(title, () -> {
+            try {
+                result = query.getBestUsers("week");
+            } catch (DatabaseException e) {
+                error = e.getMessage();
+            }
+            showResult(title, result, error);
+        });
+
+        // show 10 best user in month - Ghazal
+        title = "Show 10 best user in month";
+        addQuery(title, () -> {
+            try {
+                result = query.getBestUsers("month");
+            } catch (DatabaseException e) {
+                error = e.getMessage();
+            }
+            showResult(title, result, error);
+        });
+
+        // show orders - Bita
+        title = "Show All Orders";
+        addQuery(title, () -> {
+            try {
+                result = query.getOrders();
+            } catch (DatabaseException e) {
+                error = e.getMessage();
+            }
+            showResult(title, result, error);
+        });
+
+
 
         // TODO:show best selling product in week(ali)
         // TODO:show best selling product in month(ali)
@@ -84,10 +125,20 @@ public class QueriesController implements Initializable {
         title = "Show 3 Least Score Reviews";
         addQuery(title, () -> getInput("Enter product name", title, query::get3LestReview));
 
-        // TODO:show amount of sales of one product per month for the admin (ghazal)
-        // check isAdmin in Application
+        // show amount of sales of one product per month for the admin - Ghazal
+        title = "Show sales of one product per month";
+        addQuery(title, () -> {
+            try {
+                result = query.salesOfOneProductInMonth();
+            } catch (DatabaseException e) {
+                error = e.getMessage();
+            }
+            showResult(title, result, error);
+        });
+
 
         // TODO:show Average store sales per month for admin (mahya)
+        // check isAdmin in Application
 
         // show users from a city
         title = "Show fellow-citizen users";
@@ -150,5 +201,6 @@ public class QueriesController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
 
 }

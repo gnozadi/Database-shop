@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EditProfileController">
+    <children>
+        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="600.0">
+            <children>
+                <Label alignment="CENTER" layoutX="88.0" layoutY="80.0" prefHeight="31.0" prefWidth="100.0" text="Username" />
+                <Label alignment="CENTER" layoutX="88.0" layoutY="130.0" prefHeight="31.0" prefWidth="100.0" text="Password" />
+                <TextField fx:id="ep_user_field" layoutX="240.0" layoutY="80.0" prefHeight="31.0" prefWidth="220.0" promptText="Enter Username" />
+                <PasswordField fx:id="ep_pass_field" layoutX="240.0" layoutY="130.0" prefHeight="31.0" prefWidth="220.0" promptText="Enter Password" />
+                <Button layoutX="152.0" layoutY="249.0" mnemonicParsing="false" onAction="#changePassword" prefHeight="31.0" prefWidth="129.0" text="New Password" />
+                <Button layoutX="350.0" layoutY="249.0" mnemonicParsing="false" onAction="#changeUsername" prefHeight="31.0" prefWidth="129.0" text="New Username" />
+                <Label fx:id="lbl_message" alignment="CENTER" layoutX="99.0" layoutY="329.0" prefHeight="31.0" prefWidth="402.0" text="" textAlignment="CENTER" />
+                <Label fx:id="back" alignment="CENTER" layoutX="14.0" layoutY="14.0" onMouseClicked="#goToMenu" prefHeight="15.0" prefWidth="39.0" text="←" textAlignment="CENTER" />
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>

@@ -48,7 +48,7 @@ public class MenuController implements Initializable {
     }
 
     public void goEditProfilePage(){
-        // TODO: implement edit name and password? :/ (ghazal)
+        switchToEditProfile();
     }
 
     public void goQueryPage() {

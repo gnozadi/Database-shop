@@ -48,7 +48,7 @@ public class DBQuery {
                     // Throw an exception if result has not valid value
                     throw new DatabaseException(DEFAULT_ERROR_MESSAGE);
                 }
-
+                System.out.println(Application.isAdmin);
             } catch (SQLException e) {
                 throw new DatabaseException(e.getMessage());
             }
@@ -71,7 +71,7 @@ public class DBQuery {
         }
     }
 
-    private boolean usernameExists(String username) throws DatabaseException {
+    public boolean usernameExists(String username) throws DatabaseException {
         String query = "select EXISTS(SELECT * FROM USERS WHERE username='" + username + "')";
         try {
             // Execute query
@@ -86,7 +86,7 @@ public class DBQuery {
         }
     }
 
-    public boolean checkExistence(ResultSet result) throws DatabaseException {
+    public static boolean checkExistence(ResultSet result) throws DatabaseException {
         // Check value of value of column in 0 or 1
         int resultValue;
         try {
@@ -118,6 +118,33 @@ public class DBQuery {
         }
     }
 
+    public void changeUsername(String newUsername, String oldUsername, String password) throws DatabaseException {
+        try {
+            if (usernameExists(newUsername)) {
+                throw new RepeatedUser();
+            }
+
+            String query = "update users set username='" + newUsername + "' where password='" + password
+                    +"' and  username='"+oldUsername+"' ;";
+            // Execute query
+            statement.execute(query);
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+    public void changePassword(String username, String newPassword, String oldPassword) throws SQLException {
+        try {
+            String query = "update users set password='" + newPassword +"' where password='" + oldPassword
+                    +"' and  username='"+username+"' ;";
+
+            // Execute query
+            statement.execute(query);
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
     //endregion
 
     // region shop
@@ -353,5 +380,124 @@ public class DBQuery {
         }
     }
 
+    public ArrayList<String[]> getCategories() throws DatabaseException{
+
+        String query = "select * from category";
+
+        try {
+            // Execute query
+            ResultSet result = statement.executeQuery(query);
+
+            // define an array list to contain result of query
+            ArrayList<String[]> tableResult = new ArrayList<>();
+
+            // Add table headers to array list
+            tableResult.add(new String[]{ID_COL, CATEGORY_NAME_COL});
+            // Add an empty row to have a space between headers and data rows
+            tableResult.add(new String[]{"", ""});
+
+            // Iterate over rows
+            while (result.next()) {
+
+                // Get values from columns
+                String id = result.getString(ID_COL);
+                String name = result.getString(CATEGORY_NAME_COL);
+
+                // Insert values to array list as a new row
+                tableResult.add(new String[]{id, name});
+            }
+            return tableResult;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException(DEFAULT_ERROR_MESSAGE);
+        }
+    }
+
+    public ArrayList<String[]> getBestUsers(String duration) throws DatabaseException{
+        String query = "";
+        String time_col = "";
+        if(duration.equals("week")) {
+            query = "select fullname,week(TransactionDate) as week " +
+                    "from customer as c, transaction as t " +
+                    "where c.ID = t.customerID " +
+                    "group by week(TransactionDate) " +
+                    "order by count(c.id) desc " +
+                    "limit 10;";
+            time_col = WEEK_COL;
+        }else {
+            query = "select fullname,month(TransactionDate) as month from customer as c, transaction as t where c.ID = t.customerID group by month(TransactionDate) order by count(c.id) desc limit 10; ";
+            time_col = MONTH_COL;
+        }
+
+        try {
+            // Execute query
+            ResultSet result = statement.executeQuery(query);
+            System.out.println(result);
+            // define an array list to contain result of query
+            ArrayList<String[]> tableResult = new ArrayList<>();
+
+            // Add table headers to array list
+            tableResult.add(new String[]{FULL_NAME_COL, time_col});
+            // Add an empty row to have a space between headers and data rows
+            tableResult.add(new String[]{"", ""});
+
+            // Iterate over rows
+            while (result.next()) {
+
+                // Get values from columns
+                String name = result.getString(FULL_NAME_COL);
+                String time = result.getString(time_col);
+
+                // Insert values to array list as a new row
+                tableResult.add(new String[]{name, time});
+            }
+            return tableResult;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException(DEFAULT_ERROR_MESSAGE);
+        }
+    }
+
+    public ArrayList<String[]> salesOfOneProductInMonth() throws DatabaseException {
+        if (Application.isAdmin) {
+            String query = "select productID, ProductName, month(date) as month, sum(ci.totalPrice) as sum from product as p,cartitem as ci, shoppingcart as sc, factor as f where p.id=ProductID and ci.ShoppingCartID = sc.ID and sc.FactorID = f.ID group by month(date) order by month(date) asc;";
+
+
+            try {
+                // Execute query
+                ResultSet result = statement.executeQuery(query);
+                System.out.println(result);
+                // define an array list to contain result of query
+                ArrayList<String[]> tableResult = new ArrayList<>();
+
+                // Add table headers to array list
+                tableResult.add(new String[]{PRODUCT_ID_COL, PRODUCT_NAME_COL, MONTH_COL, SUM_COL});
+                // Add an empty row to have a space between headers and data rows
+                tableResult.add(new String[]{"", "", "", ""});
+
+                // Iterate over rows
+                while (result.next()) {
+
+                    // Get values from columns
+                    String id = result.getString(PRODUCT_ID_COL);
+                    String name = result.getString(PRODUCT_NAME_COL);
+                    String month = result.getString(MONTH_COL);
+                    String sum = result.getString(SUM_COL);
+
+                    // Insert values to array list as a new row
+                    tableResult.add(new String[]{id, name, month, sum});
+                }
+                return tableResult;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new DatabaseException(DEFAULT_ERROR_MESSAGE);
+            }
+        } else {
+            throw new DatabaseException(NOT_ADMIN_ERROR_MESSAGE);
+        }
+    }
     // endregion
 }

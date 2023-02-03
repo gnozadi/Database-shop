@@ -41,10 +41,14 @@ public class SceneController {
         navigate(QUERY_PAGE);
     }
 
+    public static void switchToEditProfile() {
+        navigate(EDIT_PROFILE_PAGE);
+    }
+
     public static void navigate(String path) {
         Parent parent = null;
         try {
-            parent = FXMLLoader.load(Application.class.getResource(path));
+            parent = FXMLLoader.load(Objects.requireNonNull(Application.class.getResource(path)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,5 +96,4 @@ public class SceneController {
         stage.setScene(scene);
         stage.show();
     }
-
 }

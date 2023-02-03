@@ -12,7 +12,6 @@ import static controller.SceneController.switchToSignUp;
 import static other.Values.*;
 
 public class LoginController extends Application {
-
     @FXML
     private TextField tf_user_field;
 
@@ -24,13 +23,15 @@ public class LoginController extends Application {
 
     public String message = "";
 
-    String username;
-    String password;
+    static String username;
+    static String password;
 
     public void logIn(ActionEvent event) {
+
         if (inputsAreValid()) {
             DBQuery queryHandler = new DBQuery();
             try {
+
                 queryHandler.login(username, password);
                 message = USER_LOGGED;
 
@@ -72,4 +73,6 @@ public class LoginController extends Application {
     public void goSignUp() {
         switchToSignUp();
     }
+
+
 }
