@@ -1,14 +1,15 @@
-package com.example.dbtry1;
-import com.example.dbtry1.db.DBQuery;
-import com.example.dbtry1.db.DatabaseException;
+package controller;
+
+import db.DBQuery;
+import db.DatabaseException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import java.sql.SQLException;
 
-import static com.example.dbtry1.SceneController.switchToMenu;
-import static com.example.dbtry1.other.Values.*;
+import static controller.SceneController.switchToMenu;
+import static other.Values.*;
 
 public class EditProfileController {
     @FXML
@@ -31,7 +32,7 @@ public class EditProfileController {
         newUsername = ep_user_field.getText();
         newPassword = ep_pass_field.getText();
 
-        if (!newUsername.equals(LoginController.username)) {
+        if (!newUsername.equals(controller.LoginController.username)) {
             message = INVALID_USERNAME;
             showMessage();
             return false;
@@ -47,7 +48,7 @@ public class EditProfileController {
         newUsername = ep_user_field.getText();
         newPassword = ep_pass_field.getText();
 
-        if (!newPassword.equals(LoginController.password)) {
+        if (!newPassword.equals(controller.LoginController.password)) {
             message = INVALID_PASSWORD;
             showMessage();
             return false;
@@ -65,8 +66,8 @@ public class EditProfileController {
             DBQuery queryHandler = new DBQuery();
             try {
 
-                queryHandler.changePassword(LoginController.username, newPassword,LoginController.password);
-                LoginController.password = newPassword;
+                queryHandler.changePassword(controller.LoginController.username, newPassword,controller.LoginController.password);
+                controller.LoginController.password = newPassword;
                 message = PASSWORD_CHANGED;
 
                 showMessage();
@@ -82,8 +83,8 @@ public class EditProfileController {
             DBQuery queryHandler = new DBQuery();
             try {
 
-                queryHandler.changeUsername(newUsername,LoginController.username, LoginController.password);
-                LoginController.username = newUsername;
+                queryHandler.changeUsername(newUsername,controller.LoginController.username, controller.LoginController.password);
+                controller.LoginController.username = newUsername;
                 message = USERNAME_CHANGED;
 
                 showMessage();

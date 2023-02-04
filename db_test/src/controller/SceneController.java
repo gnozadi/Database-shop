@@ -5,8 +5,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
@@ -15,6 +17,7 @@ import main.Application;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static other.Path.*;
 import static other.Values.NO_RECORD;
@@ -43,6 +46,10 @@ public class SceneController {
 
     public static void switchToEditProfile() {
         navigate(EDIT_PROFILE_PAGE);
+    }
+
+    public static void switchToManageUsers() {
+        navigate(MANAGE_USERS_PAGE);
     }
 
     public static void navigate(String path) {
@@ -96,4 +103,5 @@ public class SceneController {
         stage.setScene(scene);
         stage.show();
     }
+
 }

@@ -521,14 +521,17 @@ public class DBQuery {
 
                 // Get values from columns
                 String id = result.getString(ID_COL);
-                String role = result.getString(ADMIN_COL);
-//                if (result.getString(ADMIN_COL).equals("1"))
-//                    role = "admin";
-//                else
-//                    role = "user";
+                String role = "";
+                String password = "";
+                if (result.getString(ADMIN_COL).equals("1")) {
+                    role = "admin";
+                    password = result.getString(PASSWORD_COL);
+                }
+                else {
+                    role = "user";
+                    password = "hidden!";
+                }
                 String username = result.getString(USERNAME_COL);
-                String password = result.getString(PASSWORD_COL);
-
                 // Insert values to array list as a new row
                 tableResult.add(new String[]{id, role, username, password});
             }
@@ -541,122 +544,129 @@ public class DBQuery {
     }
 
     public ArrayList<String[]> getAverageSalesPerMonth() throws DatabaseException {
-        String query = "select EXTRACT(month from TransactionDate) as month, " +
-                "avg(TotalPrice) as averageSale from transaction, factor\n" +
-                "where transaction.FactorID = factor.ID\n" +
-                "group by month\n" +
-                "order by month asc;";
+        if (Application.isAdmin) {
+            String query = "select EXTRACT(month from TransactionDate) as month, " +
+                    "avg(TotalPrice) as averageSale from transaction, factor\n" +
+                    "where transaction.FactorID = factor.ID\n" +
+                    "group by month\n" +
+                    "order by month asc;";
 
-        try {
-            // Execute query
-            ResultSet result = statement.executeQuery(query);
+            try {
+                // Execute query
+                ResultSet result = statement.executeQuery(query);
 
-            // define an array list to contain result of query
-            ArrayList<String[]> tableResult = new ArrayList<>();
+                // define an array list to contain result of query
+                ArrayList<String[]> tableResult = new ArrayList<>();
 
-            // Add table headers to array list
-            tableResult.add(new String[]{MONTH_COL, AVERAGE_SALE_COL});
+                // Add table headers to array list
+                tableResult.add(new String[]{MONTH_COL, AVERAGE_SALE_COL});
 
-            // Add an empty row to have a space between headers and data rows
-            tableResult.add(new String[]{"", ""});
+                // Add an empty row to have a space between headers and data rows
+                tableResult.add(new String[]{"", ""});
 
-            // Iterate over rows
-            while (result.next()) {
-                // Get values from columns
-                String month = result.getString(MONTH_COL);
-                String monthCol = "";
-                switch (month) {
-                    case "1" :
-                        monthCol = "January";
-                        break;
-                    case "2" :
-                        monthCol = "February";
-                        break;
-                    case "3" :
-                        monthCol = "March";
-                        break;
-                    case "4" :
-                        monthCol = "April";
-                        break;
-                    case "5" :
-                        monthCol = "May";
-                        break;
-                    case "6" :
-                        monthCol = "June";
-                        break;
-                    case "7" :
-                        monthCol = "July";
-                        break;
-                    case "8" :
-                        monthCol = "August";
-                        break;
-                    case "9" :
-                        monthCol = "September";
-                        break;
-                    case "10" :
-                        monthCol = "October";
-                        break;
-                    case "11" :
-                        monthCol = "November";
-                        break;
-                    case "12" :
-                        monthCol = "December";
-                        break;
-                    default:
-                        break;
+                // Iterate over rows
+                while (result.next()) {
+                    // Get values from columns
+                    String month = result.getString(MONTH_COL);
+                    String monthCol = "";
+                    switch (month) {
+                        case "1" :
+                            monthCol = "January";
+                            break;
+                        case "2" :
+                            monthCol = "February";
+                            break;
+                        case "3" :
+                            monthCol = "March";
+                            break;
+                        case "4" :
+                            monthCol = "April";
+                            break;
+                        case "5" :
+                            monthCol = "May";
+                            break;
+                        case "6" :
+                            monthCol = "June";
+                            break;
+                        case "7" :
+                            monthCol = "July";
+                            break;
+                        case "8" :
+                            monthCol = "August";
+                            break;
+                        case "9" :
+                            monthCol = "September";
+                            break;
+                        case "10" :
+                            monthCol = "October";
+                            break;
+                        case "11" :
+                            monthCol = "November";
+                            break;
+                        case "12" :
+                            monthCol = "December";
+                            break;
+                        default:
+                            break;
+                    }
+                    String averageSale = result.getString(AVERAGE_SALE_COL);
+
+                    // Insert values to array list as a new row
+                    tableResult.add(new String[]{monthCol, averageSale});
                 }
-                String averageSale = result.getString(AVERAGE_SALE_COL);
+                return tableResult;
 
-                // Insert values to array list as a new row
-                tableResult.add(new String[]{monthCol, averageSale});
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new DatabaseException(e.getMessage());
             }
-            return tableResult;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException(e.getMessage());
+        } else {
+            throw new DatabaseException(NOT_ADMIN_ERROR_MESSAGE);
         }
-
     }
 
     public ArrayList<String[]> getTheMostCheapSellingProviders() throws DatabaseException {
-        String query = "select PName as ProviderName, ProductName, table1.Price as Price from provider, product, (\n" +
-                "\tselect ProductID, ProviderID, min(Price) as Price\n" +
-                "\tfrom product_provider\n" +
-                "\tgroup by ProductID\n" +
-                "    ) as table1\n" +
-                "where provider.ID = table1.ProviderID and product.ID = table1.ProductID;";
+        if (Application.isAdmin) {
+            String query = "select PName as ProviderName, ProductName, table1.Price as Price from provider, product, (\n" +
+                    "\tselect ProductID, ProviderID, min(Price) as Price\n" +
+                    "\tfrom product_provider\n" +
+                    "\tgroup by ProductID\n" +
+                    "    ) as table1\n" +
+                    "where provider.ID = table1.ProviderID and product.ID = table1.ProductID;";
 
-        try {
-            // Execute query
-            ResultSet result = statement.executeQuery(query);
+            try {
+                // Execute query
+                ResultSet result = statement.executeQuery(query);
 
-            // define an array list to contain result of query
-            ArrayList<String[]> tableResult = new ArrayList<>();
+                // define an array list to contain result of query
+                ArrayList<String[]> tableResult = new ArrayList<>();
 
-            // Add table headers to array list
-            tableResult.add(new String[]{PROVIDER_COL, PRODUCT_NAME_COL, PRICE_COL});
+                // Add table headers to array list
+                tableResult.add(new String[]{PROVIDER_COL, PRODUCT_NAME_COL, PRICE_COL});
 
-            // Add an empty row to have a space between headers and data rows
-            tableResult.add(new String[]{"", "", ""});
+                // Add an empty row to have a space between headers and data rows
+                tableResult.add(new String[]{"", "", ""});
 
-            // Iterate over rows
-            while (result.next()) {
-                // Get values from columns
-                String providerName = result.getString(PROVIDER_COL);
-                String productName = result.getString(PRODUCT_NAME_COL);
-                String price = result.getString(PRICE_COL);
+                // Iterate over rows
+                while (result.next()) {
+                    // Get values from columns
+                    String providerName = result.getString(PROVIDER_COL);
+                    String productName = result.getString(PRODUCT_NAME_COL);
+                    String price = result.getString(PRICE_COL);
 
-                // Insert values to array list as a new row
-                tableResult.add(new String[]{providerName, productName, price});
+                    // Insert values to array list as a new row
+                    tableResult.add(new String[]{providerName, productName, price});
+                }
+                return tableResult;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new DatabaseException(e.getMessage());
             }
-            return tableResult;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException(e.getMessage());
         }
-
+        else {
+            throw new DatabaseException(NOT_ADMIN_ERROR_MESSAGE);
+        }
     }
 
     // endregion

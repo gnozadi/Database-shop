@@ -126,16 +126,14 @@ public class QueriesController implements Initializable {
 
         // show the list of the cheapest sellers of items for the admin - mahya
         title = "Show the Most Cheap Selling Provider";
-        if (main.Application.isAdmin) {
-            addQuery(title, () -> {
-                try {
-                    result = query.getTheMostCheapSellingProviders();
-                } catch (DatabaseException e) {
-                    error = e.getMessage();
-                }
-                showResult(title, result, error);
-            });
-        }
+        addQuery(title, () -> {
+            try {
+                result = query.getTheMostCheapSellingProviders();
+            } catch (DatabaseException e) {
+                error = e.getMessage();
+            }
+            showResult(title, result, error);
+        });
 
 
         // TODO:show The user's last 10 orders(ali)
@@ -159,18 +157,15 @@ public class QueriesController implements Initializable {
 
 
         // show Average store sales per month for admin - mahya
-        title = "show Average store sales per month for admin";
-        if (main.Application.isAdmin) {
-            addQuery(title, () -> {
-                try {
-                    result = query.getAverageSalesPerMonth();
-                } catch (DatabaseException e) {
-                    error = e.getMessage();
-                }
-                showResult(title, result, error);
-            });
-        }
-
+        title = "show Average store sales per month";
+        addQuery(title, () -> {
+            try {
+                result = query.getAverageSalesPerMonth();
+            } catch (DatabaseException e) {
+                error = e.getMessage();
+            }
+            showResult(title, result, error);
+        });
 
         // show users from a city
         title = "Show fellow-citizen users";

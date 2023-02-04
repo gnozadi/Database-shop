@@ -23,8 +23,8 @@ public class LoginController extends Application {
 
     public String message = "";
 
-    static String username;
-    static String password;
+    public static String username;
+    public static String password;
 
     public void logIn(ActionEvent event) {
 
