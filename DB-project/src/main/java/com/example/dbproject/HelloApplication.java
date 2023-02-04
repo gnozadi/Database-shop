@@ -134,8 +134,6 @@ public class HelloApplication extends Application {
 
     }
 
-
-
     public void usersInCity(){
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -469,8 +467,238 @@ public class HelloApplication extends Application {
 
     }
 
-    public void UserAccessList(){
+    public void editProfileUser(){
 
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("edit profile");
+
+        BorderPane borderPane = new BorderPane();
+
+        TextField current_username = new TextField();
+        current_username.setText("current username");
+        current_username.setMaxSize(200,200);
+
+
+        TextField username = new TextField();
+        username.setText("updated username");
+        username.setMaxSize(200,200);
+        Button username_save_btn = new Button("save new username");
+
+
+
+        TextField password = new TextField();
+        password.setText("updated password");
+        password.setMaxSize(200,200);
+        Button password_save_btn = new Button("save new password");
+
+
+        TextField email = new TextField();
+        email.setText("updated email");
+        email.setMaxSize(200,200);
+        Button email_save_btn = new Button("save new email");
+
+
+        TextField fullName = new TextField();
+        fullName.setText("updated fullName");
+        fullName.setMaxSize(200,200);
+        Button name_save_btn = new Button("save new name");
+
+
+        TextField birthDate = new TextField();
+        birthDate.setText("updated birthdate");
+        birthDate.setMaxSize(200,200);
+        Button birthdate_save_btn = new Button("save new birthdate");
+
+
+
+
+        VBox vbox = new VBox();
+        vbox.setSpacing(5);
+        vbox.getChildren().addAll(current_username, username, username_save_btn,
+                password, password_save_btn, email, email_save_btn, birthDate,
+                birthdate_save_btn, fullName, name_save_btn);
+        vbox.setAlignment(Pos.CENTER);
+
+
+        borderPane.setCenter(vbox);
+
+        username_save_btn.setOnAction(e -> {
+            String cur_username = current_username.getText();
+            String temp_username = username.getText();
+
+            if (!cur_username.equals("current username")){
+                if (!temp_username.equals("updated username")){
+                    try{
+                        Connection con=DriverManager.getConnection(
+                                "jdbc:mysql://localhost:3306/shop","root","1457914Neg!");
+                        Statement stmt=con.createStatement();
+                        String sql = "UPDATE customerprofile SET Username=" + "'" + temp_username + "'" +
+                                " WHERE Username=" + "'" + cur_username + "'";
+                        int rs = stmt.executeUpdate(sql);
+
+                        con.close();
+                    }catch(Exception ex){
+                        System.out.println(ex);
+                        System.out.println("Incorrect username or An Unknown error happened -_-\n Try again ...");
+                    }
+                }
+            }
+
+        });
+
+        password_save_btn.setOnAction(e -> {
+            String cur_username = current_username.getText();
+            String temp_password = password.getText();
+            if (!cur_username.equals("current username")) {
+                if (!temp_password.equals("updated password")){
+                    try{
+                        Connection con=DriverManager.getConnection(
+                                "jdbc:mysql://localhost:3306/shop","root","1457914Neg!");
+                        Statement stmt=con.createStatement();
+                        String sql = "UPDATE customerprofile SET UserPassword=" + "'" + temp_password + "'" +
+                                " WHERE Username=" + "'" + cur_username + "'";
+                        int rs = stmt.executeUpdate(sql);
+
+                        con.close();
+                    }catch(Exception ex){
+                        System.out.println(ex);
+                        System.out.println("An Unknown error happened -_-\n Try again ...");
+                    }
+                }
+            }
+            else {
+                System.out.println("Incorrect Username");
+            }
+
+
+        });
+
+        email_save_btn.setOnAction(e -> {
+            String cur_username = current_username.getText();
+            String temp_email = email.getText();
+
+            if (!cur_username.equals("current username")) {
+                if (!temp_email.equals("updated email")) {
+                    try {
+                        Connection con = DriverManager.getConnection(
+                                "jdbc:mysql://localhost:3306/shop", "root", "1457914Neg!");
+                        Statement stmt = con.createStatement();
+                        String sql = "UPDATE customerprofile SET Email=" + "'" + temp_email + "'" +
+                                " WHERE Username=" + "'" + cur_username + "'";
+                        int rs = stmt.executeUpdate(sql);
+
+                        con.close();
+                    } catch (Exception ex) {
+                        System.out.println(ex);
+                        System.out.println("An Unknown error happened -_-\n Try again ...");
+                    }
+                }
+            }
+        });
+
+        birthdate_save_btn.setOnAction(e -> {
+            String cur_username = current_username.getText();
+            String temp_birthdate = birthDate.getText();
+
+            int id = -1;
+
+            try {
+                Connection con = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/shop", "root", "1457914Neg!");
+                Statement stmt = con.createStatement();
+                String sql = "SELECT ID FROM customerprofile" +
+                        " WHERE Username=" + "'" + cur_username + "'";
+                ResultSet rs = stmt.executeQuery(sql);
+
+
+                while (rs.next()) {
+                    id = rs.getInt("ID");
+                }
+                con.close();
+
+            } catch (Exception ex) {
+                System.out.println("An Unknown error happened -_-\n Try again ...");
+            }
+
+            if (id != -1) {
+                if (!temp_birthdate.equals("updated birthdate")){
+                    try {
+                        Connection con = DriverManager.getConnection(
+                                "jdbc:mysql://localhost:3306/shop", "root", "1457914Neg!");
+                        Statement stmt = con.createStatement();
+                        String sql = "UPDATE customer SET BirthDate=" + "'" + temp_birthdate + "'" +
+                                " WHERE ProfileID="  + id;
+                        int rs = stmt.executeUpdate(sql);
+
+                        con.close();
+                    } catch (Exception ex) {
+                        System.out.println(ex);
+                        System.out.println("An Unknown error happened -_-\n Try again ...");
+                    }
+                }
+            }
+            else {
+                System.out.println("Incorrect username");
+            }
+
+        });
+
+        name_save_btn.setOnAction(e -> {
+            String cur_username = current_username.getText();
+            String temp_fullname = fullName.getText();
+
+            int id = -1;
+
+            try {
+                Connection con = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/shop", "root", "1457914Neg!");
+                Statement stmt = con.createStatement();
+                String sql = "SELECT ID FROM customerprofile" +
+                        " WHERE Username=" + "'" + cur_username + "'";
+                ResultSet rs = stmt.executeQuery(sql);
+
+
+                while (rs.next()) {
+                    id = rs.getInt("ID");
+                }
+                con.close();
+
+            } catch (Exception ex) {
+                System.out.println("An Unknown error happened -_-\n Try again ...");
+            }
+
+            if (id != -1) {
+                if (!temp_fullname.equals("updated fullName")){
+                    try {
+                        Connection con = DriverManager.getConnection(
+                                "jdbc:mysql://localhost:3306/shop", "root", "1457914Neg!");
+                        Statement stmt = con.createStatement();
+                        String sql = "UPDATE customer SET FullName=" + "'" + temp_fullname + "'" +
+                                " WHERE ProfileID=" + "'" + id + "'";
+                        int rs = stmt.executeUpdate(sql);
+
+                        con.close();
+                    } catch (Exception ex) {
+                        System.out.println("An Unknown error happened -_-\n Try again ...");
+                    }
+                }
+            }
+            else {
+                System.out.println("Incorrect username");
+            }
+
+
+        });
+
+        Scene scene = new Scene(borderPane,500,500);
+
+        window.setScene(scene);
+        window.showAndWait();
+
+    }
+
+    public void UserAccessList(){
 
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -478,11 +706,23 @@ public class HelloApplication extends Application {
 
         BorderPane borderPane = new BorderPane();
 
+        Label splitter1 = new Label();
+        splitter1.setText("----------------------------");
+
+        Label splitter2 = new Label();
+        splitter1.setText("----------------------------");
+
+        Label splitter3 = new Label();
+        splitter1.setText("----------------------------");
+
+        Label splitter4 = new Label();
+        splitter1.setText("----------------------------");
+
 
         Label title = new Label();
         title.setText("لیست دسترسی های مشتری");
         Label space1 = new Label();
-        space1.setText("\n\n\n\n\n");
+        space1.setText("\n");
         Button productsList_btn = new Button("نمایش لیست محصولات");
         Button reviewsList_btn = new Button("نمایش سه نظر برتر محصول انتخابی");
         product_textfield = new TextField("نام محصول");
@@ -496,10 +736,11 @@ public class HelloApplication extends Application {
         providers_textfield = new TextField("نام شهر");
         providers_textfield.setMaxSize(200,100);
         providers_textfield.setAlignment(Pos.CENTER);
-        Button editProfile = new Button("ویرایش اطلاعات");
+        Button editProfile_btn = new Button("ویرایش اطلاعات");
 
 
-        VBox vBox = new VBox(title,space1,productsList_btn,reviewsList_btn,product_textfield,usersList_btn,users_textfield,providersList_btn,providers_textfield,editProfile);
+        VBox vBox = new VBox(title,space1,productsList_btn,splitter1,reviewsList_btn,product_textfield,splitter2,
+                usersList_btn,users_textfield,splitter3,providersList_btn,providers_textfield,splitter4,editProfile_btn);
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(10);
         borderPane.setCenter(vBox);
@@ -521,6 +762,12 @@ public class HelloApplication extends Application {
             providersInCity();
         });
 
+        editProfile_btn.setOnAction(e->{
+            editProfileUser();
+        });
+
+
+
         Scene scene = new Scene(borderPane,350,500);
 
         window.setScene(scene);
@@ -528,6 +775,81 @@ public class HelloApplication extends Application {
 
     }
 
+    public void AdminAccessList(){
+
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("admin access list");
+
+        BorderPane borderPane = new BorderPane();
+
+        Label splitter1 = new Label();
+        splitter1.setText("----------------------------");
+
+        Label splitter2 = new Label();
+        splitter1.setText("----------------------------");
+
+        Label splitter3 = new Label();
+        splitter1.setText("----------------------------");
+
+        Label splitter4 = new Label();
+        splitter1.setText("----------------------------");
+
+
+        Label title = new Label();
+        title.setText("لیست دسترسی های ادمین");
+        Label space1 = new Label();
+        space1.setText("\n");
+        Button productsList_btn = new Button("نمایش لیست محصولات");
+        Button reviewsList_btn = new Button("نمایش سه نظر برتر محصول انتخابی");
+        product_textfield = new TextField("نام محصول");
+        product_textfield.setMaxSize(200,100);
+        product_textfield.setAlignment(Pos.CENTER);
+        Button usersList_btn = new Button("نمایش کاربران مربوط به یک شهر");
+        users_textfield = new TextField("نام شهر");
+        users_textfield.setMaxSize(200,100);
+        users_textfield.setAlignment(Pos.CENTER);
+        Button providersList_btn = new Button("نمایش تامین کنندگان مربوط به یک شهر");
+        providers_textfield = new TextField("نام شهر");
+        providers_textfield.setMaxSize(200,100);
+        providers_textfield.setAlignment(Pos.CENTER);
+
+
+        VBox vBox = new VBox(title,space1,productsList_btn,splitter1,reviewsList_btn,product_textfield,splitter2,
+                usersList_btn,users_textfield,splitter3,providersList_btn,providers_textfield,splitter4);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(10);
+        borderPane.setCenter(vBox);
+
+
+        productsList_btn.setOnAction(e->{
+            ShowProducts();
+        });
+
+        reviewsList_btn.setOnAction(e->{
+            threeBestReviews();
+        });
+
+        usersList_btn.setOnAction(e->{
+            usersInCity();
+        });
+
+        providersList_btn.setOnAction(e->{
+            providersInCity();
+        });
+
+//        editProfile_btn.setOnAction(e->{
+//
+//        });
+
+
+
+        Scene scene = new Scene(borderPane,350,500);
+
+        window.setScene(scene);
+        window.showAndWait();
+
+    }
 
 
     @Override
