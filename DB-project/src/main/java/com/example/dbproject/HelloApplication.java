@@ -56,7 +56,8 @@ public class HelloApplication extends Application {
 
         Button admin_login_btn = new Button("login as admin");
         Button user_login_btn = new Button("login as user");
-        HBox hBox1 = new HBox(admin_login_btn, user_login_btn);
+        Button signup_btn = new Button("signup");
+        HBox hBox1 = new HBox(admin_login_btn, user_login_btn, signup_btn);
         hBox1.setAlignment(Pos.TOP_CENTER);
         hBox1.setSpacing(10);
 
@@ -82,7 +83,8 @@ public class HelloApplication extends Application {
                     c++;
                     if (rs.getInt("IsAdmin") == 1){
                         System.out.println("admin logged in successfully");
-                        //show admin access list
+                        AdminAccessList();
+
                     }
                     else {
                         System.out.println("Incorrect username or access");
@@ -128,12 +130,85 @@ public class HelloApplication extends Application {
 
         });
 
+        signup_btn.setOnAction(e -> {
+            signup();
+        });
+
         root.setCenter(vBox1);
 
         return root;
 
     }
 
+    public void signup(){
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("user signup");
+
+        BorderPane borderPane = new BorderPane();
+
+        TextField username = new TextField();
+        username.setText("username");
+        username.setMaxSize(200,200);
+
+
+        TextField password = new TextField();
+        password.setText("password");
+        password.setMaxSize(200,200);
+
+
+        TextField email = new TextField();
+        email.setText("email");
+        email.setMaxSize(200,200);
+
+
+        Button submit = new Button("Submit");
+
+
+        VBox vbox = new VBox();
+        vbox.setSpacing(5);
+        vbox.getChildren().addAll(username, password, email,submit);
+        vbox.setAlignment(Pos.CENTER);
+
+
+        borderPane.setCenter(vbox);
+
+        submit.setOnAction(e -> {
+            if(!username.getText().equals("username") && !password.getText().equals("password") &&
+                    !email.getText().equals("email")){
+                String u = username.getText();
+                String p = password.getText();
+                String em = email.getText();
+
+                try {
+                    Connection con = DriverManager.getConnection(
+                            "jdbc:mysql://localhost:3306/shop", "root", "1457914Neg!");
+                    Statement stmt = con.createStatement();
+                    String sql = "INSERT INTO customerprofile (Username, UserPassword, Email) VALUES ("
+                            + "'" + u + "'" + "," + "'" + p + "'" + "," + "'" + em + "'" + ")";
+                    System.out.println(sql);
+                    int rs = stmt.executeUpdate(sql);
+
+                    con.close();
+                } catch (Exception ex) {
+                    System.out.println(ex);
+                    System.out.println("An Unknown error happened -_-\n Try again ...");
+                }
+
+
+
+
+
+
+            }
+        });
+
+        Scene scene = new Scene(borderPane,500,500);
+
+        window.setScene(scene);
+        window.showAndWait();
+
+    }
     public void usersInCity(){
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -838,9 +913,6 @@ public class HelloApplication extends Application {
             providersInCity();
         });
 
-//        editProfile_btn.setOnAction(e->{
-//
-//        });
 
 
 
