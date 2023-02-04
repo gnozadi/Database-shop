@@ -669,5 +669,53 @@ public class DBQuery {
         }
     }
 
-    // endregion
+    public void removeUser(String id) {
+        String query = "DELETE FROM users WHERE id='" + id + "'";
+        // Execute query
+        try {
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void editUser(String id, String username, String password, String admin) {
+        String query = "UPDATE users SET username='" + username + "', password ='" + password + "', admin = '" + admin + "' " +
+                "WHERE id='" + id + "'";
+        // Execute query
+        try {
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String[] getUserInfoById(String id) {
+        String query = "SELECT * FROM users WHERE id='" + id + "'";
+        String[] result = new String[3];
+        for (int i = 0; i < 3; i ++)
+            result[i] = "";
+        // Execute query
+        try {
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            // Iterate over rows
+            while (resultSet.next()) {
+                // Get values from columns
+                String username = resultSet.getString(USERNAME_COL);
+                String password = resultSet.getString(PASSWORD_COL);
+                String role = resultSet.getString(ADMIN_COL);
+
+                // Insert values to array list as a new row
+                result[0] = username;
+                result[1] = password;
+                result[2] = role;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+        // endregion
 }

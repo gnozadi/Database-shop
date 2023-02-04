@@ -24,7 +24,6 @@ public class MenuController implements Initializable {
             addButton("Product management", this::goProductManagementPage);
         }
         addButton("Edit profile", this::goEditProfilePage);
-        addButton("Manage Users", this::goUserManagementPage);
         addButton("Logout", this::logout);
     }
 
